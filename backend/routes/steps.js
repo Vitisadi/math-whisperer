@@ -24,10 +24,10 @@ router.put(`/${parsed.name}`, async (req, res) => {
 
     // Convert to readable
     let readable = await toReadable(equation, steps);
-
-    console.log(readable)
         
     res.json(readable);
+
+    res.json({steps});
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).json({ error: 'Failed to fetch data' });

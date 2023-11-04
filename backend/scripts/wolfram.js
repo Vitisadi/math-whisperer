@@ -3,7 +3,6 @@ import { parseStringPromise } from 'xml2js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 // Step-by-step solution from an equation using Wolfram Alpha Steps API
 async function wolframFunction(equation) {
    const app_id = process.env.WOLFRAM_STEPS_APP_ID;
