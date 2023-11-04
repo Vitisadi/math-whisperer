@@ -24,8 +24,6 @@ router.put(`/${parsed.name}`, async (req, res) => {
 
     // Convert to readable
     let readable = await toReadable(equation, steps);
-
-    console.log(readable)
         
     res.json(readable);
   } catch (error) {
