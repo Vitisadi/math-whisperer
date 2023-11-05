@@ -27,7 +27,7 @@ router.put(`/${parsed.name}`, async (req, res) => {
         
     res.json(readable);
 
-    res.json({steps});
+    // res.json({steps});
   } catch (error) {
     console.error('Error fetching data:', error);
     res.status(500).json({ error: 'Failed to fetch data' });
