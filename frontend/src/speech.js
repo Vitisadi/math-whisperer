@@ -10,6 +10,8 @@ function speak(text){
 }
 
 export const speakNext = () => {
+   window.speechSynthesis.cancel();
+   
    let toSpeak = ""
    if(!Array.isArray(speachData) || speachData.length === 0){
       return;

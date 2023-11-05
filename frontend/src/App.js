@@ -47,7 +47,7 @@ function App() {
         SpeechRecognition.startListening(); // Start listening
       }
     }
-    else if (event.code !== 'Escape'){
+    else if (event.code !== 'Escape' && event.code !== 'Alt' && event.code !== 'Tab'){
       speakNext();
     }
 
@@ -56,6 +56,7 @@ function App() {
   // HANDLES ESCAPE PRESS
   const handleEscapePress = (event) => {
     if (event.code === 'Escape') {
+      window.speechSynthesis.cancel();
       sayInstructions();
     }
   };
