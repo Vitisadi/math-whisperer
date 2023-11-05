@@ -45,7 +45,6 @@ function App() {
       console.error('Error:', error);
     }
   }
-
   
   // HANDLES SPACE PRESS
   const handleSpacebarPress = (event) => {
@@ -55,11 +54,10 @@ function App() {
         SpeechRecognition.stopListening(); // Stop listening
       } else {
         SpeechRecognition.startListening(); // Start listening
-
       }
     }
 
-    else if (event.code !== 'Escape' && event.code !== 'Alt' && event.code !== 'Tab'){
+    else if (event.code !== 'Escape' && event.code !== 'Alt' && event.code !== 'Tab' && event.code !== 'Meta' && event.code !== 'KeyR'){
       let x = speakNext();
       setSpokenValue(x);
     }
@@ -93,7 +91,6 @@ function App() {
   // eslint-disable-next-line
   }, []);
 
-
   // RUNS ALL THE FUNCTIONS
   useEffect(() => {
     if (!listening && transcript) {
@@ -121,13 +118,12 @@ function App() {
         <h3>Transcript: {transcript}</h3>
       </div>
 
-      {!stepsData && transcript && (
+      {!stepsData && (
         <div>
           <h3>Answer:</h3>
           <Example></Example>
         </div>
       )}
-
     
     {stepsData && (
   <div>
