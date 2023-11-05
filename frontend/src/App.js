@@ -1,12 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 function App() {
   const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
 
-  // Define the sendText function before using it in the useEffect
-  const sendText = async (text) => {
+  const [stepsData, setStepsData] = useState(null); // Initialize as null
+
+  const speakData = (data) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(data);
+      utterance.rate = 1; // Adjust the speech rate as needed
+      window.speechSynthesis.speak(utterance);
+    } else {
+      console.error('Speech synthesis not supported in this browser.');
+    }
+  };
+
+
+  // Define the getEquations function before using it in the useEffect
+  const getEquations = async (text) => {
     try {
       const response = await fetch('http://localhost:8080/getEquation', {
         method: 'PUT',
@@ -24,7 +37,7 @@ function App() {
 
       // Handle the response here (e.g., parse JSON if the server responds with JSON)
       const data = await response.json();
-      console.log(data);
+      console.log(data.equation);
       return data.equation; // Return the equation from the response
     } catch (error) {
       console.error('Error:', error);
@@ -49,6 +62,7 @@ function App() {
 
       // Handle the response here (e.g., parse JSON if the server responds with JSON)
       const data = await response.json();
+      setStepsData(data);
       console.log(data);
     } catch (error) {
       console.error('Error:', error);
@@ -76,10 +90,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!listening && transcript) {
+    if (!listening && transcript && setStepsData != null) {
       // Log the transcript when not listening (microphone turned off)
       console.log(transcript);
-      sendText(transcript).then((equation) => {
+      getEquations(transcript).then((equation) => {
         getSteps(equation); // Call the getSteps function with the obtained equation
       });
     }
@@ -104,41 +118,3 @@ function App() {
 }
 
 export default App;
-
-  // // This function will be triggered when the spacebar is pressed
-  // const handleSpacebarPress = async (event) => {
-  //   if (event.code === 'Space') {
-  //     let equation = "x^2-5x+6=0";
-  //     try {
-  //       const response = await fetch('http://localhost:8080/steps', {
-  //         method: 'PUT',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ equation: equation }),
-  //       });
-
-  //       // Check if the request was successful
-  //       if (!response.ok) {
-  //         console.error('Error Response:', response);
-  //         return
-  //       } 
-
-  //       const data = await response.json();
-  //       console.log(data);
-
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Attach the event listener
-  //   window.addEventListener('keydown', handleSpacebarPress);
-
-  //   // Remove the event listener on cleanup
-  //   return () => {
-  //     window.removeEventListener('keydown', handleSpacebarPress);
-  //   };
-  // }, []); // The empty array ensures this effect is only run on mount and unmount
