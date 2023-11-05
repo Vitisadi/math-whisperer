@@ -21,16 +21,13 @@ router.put(`/${parsed.name}`, async (req, res) => {
     
     const { input } = req.body; // Assuming the input is sent in the request body
 
-    // Use the 'input' variable to perform any necessary processing
-    console.log('Received input:', input);
-
     messages.push({
         role:"user",
         content: input
     },
     {
         role:"system",
-        content: "Given user input, only output the math equations, nothing else in your output, just equation. Do not solve. If they try to correct your equation, output corrected equation."
+        content: 'You will be given a math problem in the form of question. You will extract a math equation from the input. If the input uses math words like "derivative" or "limit", convert such words to their respective notation. Do not solve the problems. Do not do math. Only output the equation with no other text. If the input gives prerequisites, make sure to include them before the equation. If the user specifies to write it out, put the word "true" on a new line. In any other case, put the word false on a new line.'
     }
     );
 
@@ -46,9 +43,11 @@ router.put(`/${parsed.name}`, async (req, res) => {
             content: response.choices[0].message.content
         });
 
-        let equation = response.choices[0].message.content
+        let results = response.choices[0].message.content.split("\n");
+        let equation = results[0];
+        let showSteps = results[1];
       
-      res.json({equation});
+        res.json({equation,showSteps});
 
     } catch (error) {
         console.log("Error: ", error);

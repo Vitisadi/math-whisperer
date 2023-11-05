@@ -13,7 +13,7 @@ const parsed = path.parse(__filename);
 
 router.put(`/${parsed.name}`, async (req, res) => {
   try {
-    const { equation } = req.body;
+    const { equation, showSteps } = req.body;
 
     if (!equation) {
       return res.status(400).json({ error: 'Equation is required' });
@@ -26,6 +26,11 @@ router.put(`/${parsed.name}`, async (req, res) => {
     if(solution === ""){
       res.json(["Sorry, we do not current support this functionality. Please try another equation."])
       return
+    }
+
+    else if (showSteps.toLowerCase() == "false"){
+      res.json([solution]);
+      return;
     }
 
     // Convert to readable
