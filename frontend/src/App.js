@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import {speakData, getEquations, getSteps} from './function.js';
+import {getEquations } from './function.js';
+import {speakNext, setData} from './speech.js';
 
 function App() {
-  const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
+  const { transcript, listening } = useSpeechRecognition();//startListening, stopListening
   const [stepsData, setStepsData] = useState(null);
 
   async function getSteps(eqResult) {
@@ -29,7 +30,8 @@ function App() {
       setStepsData(data);
   
       // Assuming you have a function defined to speak the data
-      speakData(data);
+      setData(data);
+      speakNext();
   
     } catch (error) {
       console.error('Error:', error);
@@ -45,6 +47,10 @@ function App() {
         SpeechRecognition.startListening(); // Start listening
       }
     }
+    else if (event.code !== 'Escape'){
+      speakNext();
+    }
+
   };
 
   // HANDLES ESCAPE PRESS
@@ -71,6 +77,7 @@ function App() {
       window.removeEventListener('keydown', handleSpacebarPress);
       window.removeEventListener('keydown', handleEscapePress);
     };
+  // eslint-disable-next-line
   }, []);
 
   // RUNS ALL THE FUNCTIONS
