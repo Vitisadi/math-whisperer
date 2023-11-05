@@ -8,15 +8,16 @@ function App() {
   const { transcript, listening } = useSpeechRecognition();//startListening, stopListening
   const [stepsData, setStepsData] = useState(null);
 
-
-  async function getSteps(equation) {
+  async function getSteps(eqResult) {
     try {
+      let equation = eqResult.equation;
+      let showSteps = eqResult.showSteps;
       const response = await fetch('http://localhost:8080/steps', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ equation: equation }),
+        body: JSON.stringify({ equation: equation, showSteps: showSteps}),
       });
   
       if (!response.ok) {
@@ -84,8 +85,8 @@ function App() {
     if (!listening && transcript) {
       // Log the transcript when not listening (microphone turned off)
       console.log(transcript);
-      getEquations(transcript).then((equation) => {
-        getSteps(equation);
+      getEquations(transcript).then((eqResult) => {
+        getSteps(eqResult);
       });
     }
   }, [listening, transcript]);

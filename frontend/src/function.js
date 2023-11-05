@@ -42,12 +42,11 @@ export const getEquations = async (text) => {
       console.error('Error Response:', response);
       throw Error('Request failed');
     }
+      // Handle the response here (e.g., parse JSON if the server responds with JSON)
+      const data = await response.json();
+      console.log(data.equation);
+      return data; // Return the equation from the response
+    } catch (error) {
+      console.error('Error:', error);
 
-    // Handle the response here (e.g., parse JSON if the server responds with JSON)
-    const data = await response.json();
-    console.log(data.equation);
-    return data.equation; // Return the equation from the response
-  } catch (error) {
-    console.error('Error:', error);
-  }
 };

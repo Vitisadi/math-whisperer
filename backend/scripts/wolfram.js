@@ -35,8 +35,10 @@ async function wolframFunction(equation) {
                if(i + 1 >= pods[1].subpod.length && i != 0){
                   steps = pods[1].subpod[i].plaintext
                }
-               // All others -> solutions
-               solution += pods[1].subpod[i].plaintext
+               else{
+                  // All others -> solutions
+                  solution += pods[1].subpod[i].plaintext
+               }
             }
          }
       }
