@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import {speakData, getEquations, getSteps} from './function.js';
-import Display_Navbar from './Navbar.jsx';
+import { speakData, getEquations, getSteps } from './function.js';
+import DisplayNavbar from './Navbar.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
+
+import './App.css'; // Import your CSS file for App-specific styles
 
 function App() {
   const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
@@ -19,24 +21,23 @@ function App() {
         },
         body: JSON.stringify({ equation: equation }),
       });
-  
+
       if (!response.ok) {
         console.error('Error Response:', response);
         throw new Error('Request failed');
       }
-  
+
       const data = await response.json();
       console.log(data);
       setStepsData(data);
-  
+
       // Assuming you have a function defined to speak the data
       speakData(data);
-  
     } catch (error) {
       console.error('Error:', error);
     }
   }
-  
+
   // HANDLES SPACE PRESS
   const handleSpacebarPress = (event) => {
     if (event.code === 'Space') {
@@ -58,10 +59,12 @@ function App() {
   // READS OUT THE INSTRUCTIONS
   const sayInstructions = () => {
     const speechSynthesis = window.speechSynthesis;
-    const instructions = new SpeechSynthesisUtterance('Hi, this is how you use it. Press the ESC key if you want to repeat the instructions. Please press the spacebar to use our application.');
+    const instructions = new SpeechSynthesisUtterance(
+      'Hi, this is how you use it. Press the ESC key if you want to repeat the instructions. Please press the spacebar to use our application.'
+    );
     speechSynthesis.speak(instructions);
   };
-  
+
   useEffect(() => {
     // Attach the spacebar press event listener when the component mounts
     window.addEventListener('keydown', handleSpacebarPress);
@@ -90,25 +93,24 @@ function App() {
   };
 
   return (
+    <div className="app-container">
+      <DisplayNavbar />
 
-    <div>
-      <Display_Navbar /> 
-  
       <div>
         <Card style={cardStyle}>
-          <Card.Header>Transcript</Card.Header>
+          <Card.Header className="card-header">Transcript</Card.Header>
           <Card.Body>
             <Card.Text>{transcript}</Card.Text>
           </Card.Body>
         </Card>
       </div>
 
-      <br></br>
+      <br />
 
       {stepsData && (
         <div>
           <Card style={cardStyle}>
-            <Card.Header>Steps Result</Card.Header>
+            <Card.Header className="card-header">Steps Result</Card.Header>
             <Card.Body>
               <ol start="1"> {/* Use <ol> for ordered list, start at 1 */}
                 {stepsData.map((step, index) => (
@@ -119,9 +121,8 @@ function App() {
           </Card>
         </div>
       )}
-
     </div>
   );
-}  
+}
 
 export default App;
