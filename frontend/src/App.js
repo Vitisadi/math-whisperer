@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {speakData, getEquations, getSteps} from './function.js';
+import Display_Navbar from './Navbar.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Card from 'react-bootstrap/Card';
 
 function App() {
   const { transcript, listening, startListening, stopListening } = useSpeechRecognition();
@@ -82,28 +85,41 @@ function App() {
     }
   }, [listening, transcript]);
 
-  return (
-    <div>
-      {listening ? <p>Listening...</p> : <p>Not listening</p>}
+  const cardStyle = {
+    fontSize: '20px', // Increase the font size as desired
+  };
 
-      {listening ? 'Stop Listening' : 'Start Listening'}
+  return (
+
+    <div>
+      <Display_Navbar /> 
   
       <div>
-        <p>Transcript: {transcript}</p>
+        <Card style={cardStyle}>
+          <Card.Header>Transcript</Card.Header>
+          <Card.Body>
+            <Card.Text>{transcript}</Card.Text>
+          </Card.Body>
+        </Card>
       </div>
+
+      <br></br>
 
       {stepsData && (
-      <div>
-        <p>Steps Result:</p>
-        <ul>
-          {stepsData.map((step, index) => (
-            <li key={index}>{step}</li>
-          ))}
-        </ul>
-      </div>
-    )}
-  
-      
+        <div>
+          <Card style={cardStyle}>
+            <Card.Header>Steps Result</Card.Header>
+            <Card.Body>
+              <ol start="1"> {/* Use <ol> for ordered list, start at 1 */}
+                {stepsData.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ol>
+            </Card.Body>
+          </Card>
+        </div>
+      )}
+
     </div>
   );
 }  
