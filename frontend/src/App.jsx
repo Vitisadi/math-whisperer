@@ -3,11 +3,18 @@ import './App.css';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import {getEquations } from './function.js';
 import {speakNext, setData} from './speech.js';
+import ReactLoading from 'react-loading';
 
 function App() {
   const { transcript, listening } = useSpeechRecognition();//startListening, stopListening
   const [stepsData, setStepsData] = useState(null);
   const [spokenValue, setSpokenValue] = useState(0); // Define spokenValue state
+
+  const Example = ({ type, color }) => (
+      <div style={{ marginTop: '-200px' }}>
+      <ReactLoading type={type} color={color} height={'60%'} width={'600px'} />
+    </div>
+  );
 
   async function getSteps(eqResult) {
     try {
@@ -38,14 +45,17 @@ function App() {
       console.error('Error:', error);
     }
   }
+
   
   // HANDLES SPACE PRESS
   const handleSpacebarPress = (event) => {
+
     if (event.code === 'Space') {
       if (listening) {
         SpeechRecognition.stopListening(); // Stop listening
       } else {
         SpeechRecognition.startListening(); // Start listening
+
       }
     }
 
@@ -83,6 +93,7 @@ function App() {
   // eslint-disable-next-line
   }, []);
 
+
   // RUNS ALL THE FUNCTIONS
   useEffect(() => {
     if (!listening && transcript) {
@@ -94,22 +105,30 @@ function App() {
     }
   }, [listening, transcript]);
 
-  const myComponentStyles = {
-    // Other styles here
-  };
-  
 
   return (
-    <div style={myComponentStyles}>
+    <div>
 
       <h1>MathWhisperer: Hear the Solution</h1>
       <h2>Why not change the world!</h2>
 
-
+        {/* <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
+        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+        <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
+      </svg> */}
+      
       <div>
         <h3>Transcript: {transcript}</h3>
       </div>
 
+      {!stepsData && transcript && (
+        <div>
+          <h3>Answer:</h3>
+          <Example></Example>
+        </div>
+      )}
+
+    
     {stepsData && (
   <div>
     <ul>
