@@ -48,5 +48,5 @@ export const getEquations = async (text) => {
       return data; // Return the equation from the response
     } catch (error) {
       console.error('Error:', error);
-
+    }
 };
