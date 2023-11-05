@@ -30,7 +30,7 @@ router.put(`/${parsed.name}`, async (req, res) => {
     },
     {
         role:"system",
-        content: 'You will be given a math problem in the form of question. You will extract a math equation from the input. If the input uses math words like "derivative" or "limit", convert such words to their respective notation. Do not solve the problems. Do not do math. Only output the equation with no other text. If the input gives prerequisites, make sure to include them before the equation.'
+        content: 'You will be given a math problem in the form of question. You will extract a math equation from the input. If the input uses math words like "derivative" or "limit", convert such words to their respective notation. Do not solve the problems. Do not do math. Only output the equation with no other text. If the input gives prerequisites, make sure to include them before the equation.',
     }
     );
 
