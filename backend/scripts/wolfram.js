@@ -9,7 +9,6 @@ async function wolframFunction(equation) {
    const query = "solve " + equation;
    const encodedInput = encodeURIComponent(query);
    const url = `https://api.wolframalpha.com/v2/query?appid=${app_id}&input=${encodedInput}&podstate=Result__Step-by-step+solution&format=plaintext`;
-
    try {
       const res = await axios.get(url);
       const xml_data = res.data;
@@ -18,6 +17,7 @@ async function wolframFunction(equation) {
       const result = await parseStringPromise(xml_data, { explicitArray: false, ignoreAttrs: true });
 
       let impliedEquation = "";
+      let solution = "";
       let steps = "";
 
       const pods = result.queryresult.pod;
@@ -25,12 +25,24 @@ async function wolframFunction(equation) {
       if (Array.isArray(pods)) {
          impliedEquation = pods[0].subpod.plaintext
 
-         let lastSubpod = pods[1].subpod.length - 1
-         steps = pods[1].subpod[lastSubpod].plaintext
+         if(!Array.isArray(pods[1].subpod) && pods[1].subpod !== ""){
+            solution = pods[1].subpod.plaintext
+         }
+         else {
+            let number_subpods = pods[1].subpod.length;
+            for(let i = 0; i < number_subpods; i++){
+               // Last subpod -> steps to solution
+               if(i + 1 >= pods[1].subpod.length && i != 0){
+                  steps = pods[1].subpod[i].plaintext
+               }
+               // All others -> solutions
+               solution += pods[1].subpod[i].plaintext
+            }
+         }
       }
 
       // Returning the results
-      return { equation: impliedEquation, steps };
+      return { equation: impliedEquation, solution, steps };
 
    } catch (error) {
       console.error('Error in wolframFunction:', error);
