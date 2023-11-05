@@ -11,11 +11,11 @@ async function toReadable(equation, steps) {
    
    try {
       const response = await openai.chat.completions.create({
-         model: "gpt-3.5-turbo",
+         model: "gpt-4",
          messages: [
             {
                role: "system",
-               content: "Your task is to convert a math equation and its solution steps into a script meant for reading aloud. Avoid using any mathematical symbols in the output. Instead, write out all terms and operations in words. Preface each step of the solution with the word 'STEP:', and make sure to start a new step at each logical point in the solution process where a new operation is performed or a new conclusion is reached."
+               content: "Your task is to go step by step and convert a math solution to words. Do not use mathematical symbols in the output. Write out all terms and operations in words. Preface each step of the solution with the word 'STEP:', and make sure to start a new step at each logical point in the solution process where a new operation is performed or a new conclusion is reached. Be brief. Do not include redundant steps. Do not restate the problem or unnecessary steps. Ignore restating the equation. Ignore unnecessary steps. The answer will be its own steps."
             },
             {
                role:"user",
