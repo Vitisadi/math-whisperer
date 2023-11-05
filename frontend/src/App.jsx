@@ -74,7 +74,7 @@ function App() {
   // READS OUT THE INSTRUCTIONS
   const sayInstructions = () => {
     const speechSynthesis = window.speechSynthesis;
-    const instructions = new SpeechSynthesisUtterance('Hi, this is how you use it. Press the ESC key if you want to repeat the instructions. Please press the spacebar to use our application.');
+    const instructions = new SpeechSynthesisUtterance('Press the space bar to begin. The program will be listening for your math question and if you are looking for just the answer or the answer and explanation. After you finish speaking, our system will process your words into an equation and play the result. Press any key on your keyboard to hear the next step. If you want these instructions repeated, please press escape.');
     speechSynthesis.speak(instructions);
   };
   
