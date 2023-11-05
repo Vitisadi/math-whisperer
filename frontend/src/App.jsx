@@ -9,14 +9,16 @@ function App() {
   const [stepsData, setStepsData] = useState(null);
   const [spokenValue, setSpokenValue] = useState(0); // Define spokenValue state
 
-  async function getSteps(equation) {
+  async function getSteps(eqResult) {
     try {
+      let equation = eqResult.equation;
+      let showSteps = eqResult.showSteps;
       const response = await fetch('http://localhost:8080/steps', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ equation: equation }),
+        body: JSON.stringify({ equation: equation, showSteps: showSteps}),
       });
   
       if (!response.ok) {
@@ -46,7 +48,8 @@ function App() {
         SpeechRecognition.startListening(); // Start listening
       }
     }
-    else if (event.code !== 'Escape'){
+
+    else if (event.code !== 'Escape' && event.code !== 'Alt' && event.code !== 'Tab'){
       let x = speakNext();
       setSpokenValue(x);
     }
@@ -55,6 +58,7 @@ function App() {
   // HANDLES ESCAPE PRESS
   const handleEscapePress = (event) => {
     if (event.code === 'Escape') {
+      window.speechSynthesis.cancel();
       sayInstructions();
     }
   };
@@ -84,8 +88,8 @@ function App() {
     if (!listening && transcript) {
       // Log the transcript when not listening (microphone turned off)
       console.log(transcript);
-      getEquations(transcript).then((equation) => {
-        getSteps(equation);
+      getEquations(transcript).then((eqResult) => {
+        getSteps(eqResult);
       });
     }
   }, [listening, transcript]);

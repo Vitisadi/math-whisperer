@@ -12,7 +12,7 @@ function speak(text){
 export const speakNext = () => {
    let toSpeak = "";
    let x = 0;
-   if(!Array.isArray(speachData) || speachData.length === 0){
+      if(!Array.isArray(speachData) || speachData.length === 0){
       return;
       //toSpeak = "Solution not found yet."
    }
