@@ -7,7 +7,7 @@ import {speakNext, setData} from './speech.js';
 function App() {
   const { transcript, listening } = useSpeechRecognition();//startListening, stopListening
   const [stepsData, setStepsData] = useState(null);
-
+  const [spokenValue, setSpokenValue] = useState(0); // Define spokenValue state
 
   async function getSteps(equation) {
     try {
@@ -47,9 +47,9 @@ function App() {
       }
     }
     else if (event.code !== 'Escape'){
-      speakNext();
+      let x = speakNext();
+      setSpokenValue(x);
     }
-
   };
 
   // HANDLES ESCAPE PRESS
@@ -90,27 +90,33 @@ function App() {
     }
   }, [listening, transcript]);
 
+  const myComponentStyles = {
+    // Other styles here
+  };
+  
+
   return (
-    <div>
-      {listening ? <p>Listening...</p> : <p>Not listening</p>}
+    <div style={myComponentStyles}>
 
-      {listening ? 'Stop Listening' : 'Start Listening'}
-  
+      <h1>MathWhisperer: Hear the Solution</h1>
+      <h2>Why not change the world!</h2>
+
+
       <div>
-        <p>Transcript: {transcript}</p>
+        <h3>Transcript: {transcript}</h3>
       </div>
 
-      {stepsData && (
-      <div>
-        <p>Steps Result:</p>
-        <ul>
-          {stepsData.map((step, index) => (
-            <li key={index}>{step}</li>
-          ))}
-        </ul>
-      </div>
-    )}
-  
+    {stepsData && (
+  <div>
+    <ul>
+      {stepsData.map((step, index) => (
+        <h4 key={index} className={spokenValue === index ? 'highlighted-step' : ''}>
+          {index+1}) {step}
+        </h4>
+      ))}
+    </ul>
+  </div>
+)}
       
     </div>
   );
