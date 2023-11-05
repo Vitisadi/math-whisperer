@@ -81,6 +81,11 @@ html, body {
   /* border-left: 10px solid #B78240; Adjust as needed */
 }
 
+.mic {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
 body {
   color: #E8E8E8;
   font-family: "Walter Turncoat",cursive;
