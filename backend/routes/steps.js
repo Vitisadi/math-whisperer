@@ -20,7 +20,13 @@ router.put(`/${parsed.name}`, async (req, res) => {
     }
 
     // Get steps from wolfram
-    const { equation: impliedEquation, steps } = await wolframFunction(equation);
+    const { equation: impliedEquation, solution, steps } = await wolframFunction(equation);
+
+    // Could not find the solution
+    if(solution === ""){
+      res.json(["Sorry, we do not current support this functionality. Please try another equation."])
+      return
+    }
 
     // Convert to readable
     let readable = await toReadable(equation, steps);
