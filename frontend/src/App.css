@@ -74,6 +74,13 @@ h5 {
   margin: -30px;
 }
 
+html, body {
+  height: fit-content;
+  margin: 0;
+  padding: 0;
+  /* border-left: 10px solid #B78240; Adjust as needed */
+}
+
 body {
   color: #E8E8E8;
   font-family: "Walter Turncoat",cursive;
