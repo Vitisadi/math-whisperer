@@ -28,7 +28,7 @@ router.put(`/${parsed.name}`, async (req, res) => {
       return
     }
 
-    else if (showSteps.toLowerCase() == "false"){
+    else if (showSteps?.toLowerCase() == "false"){
       res.json([solution]);
       return;
     }
